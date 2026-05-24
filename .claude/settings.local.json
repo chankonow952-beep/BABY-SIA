@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(cmd *)",
+      "Bash(\"C:/Program Files/nodejs/npm.cmd\" --version)",
+      "Bash(C:/Program Files/nodejs/npm.cmd *)",
+      "Bash(\"C:/Program Files/nodejs/npm.cmd\" run build)",
+      "Bash(python -c \"with open\\('src/config.py'\\) as f: lines=f.readlines\\(\\); print\\(repr\\(lines[54:63]\\)\\)\")",
+      "Bash(python -c \"with open\\(r'src\\\\config.js','r'\\) as f: lines=f.readlines\\(\\); print\\(repr\\(lines[54:63]\\)\\)\")",
+      "Bash(node -e \"const fs=require\\('fs'\\); const lines=fs.readFileSync\\('src/config.js','utf8'\\).split\\('\\\\n'\\); lines.slice\\(53,63\\).forEach\\(\\(l,i\\)=>console.log\\(JSON.stringify\\({n:54+i,line:l}\\)\\)\\)\")",
+      "Bash(npm run *)",
+      "Bash(node *)",
+      "Bash(start *)",
+      "Bash(npx vite *)"
+    ]
+  }
+}

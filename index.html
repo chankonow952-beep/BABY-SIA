@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#050507" />
+    <title>DITTO Particle Installation</title>
+  </head>
+  <body>
+    <canvas id="experience" aria-label="Interactive particle artwork"></canvas>
+
+    <main class="ui-shell">
+      <section class="brand-panel" aria-label="Artwork controls">
+        <div>
+          <p class="eyebrow">Pink Stardust</p>
+          <h1>DITTO</h1>
+        </div>
+      </section>
+
+      <section class="status-panel" aria-label="Particle status">
+        <span id="modeLabel">Gesture Reactive</span>
+        <span class="divider"></span>
+        <span>Camera + Touch</span>
+      </section>
+    </main>
+
+    <div id="gesture-guide" class="gesture-guide">
+      <p class="guide-title">手势说明</p>
+      <ul class="guide-list">
+        <li><span class="guide-icon">&#x1F590;</span> 张开手掌 — 爆炸散开 + 中心爱心</li>
+        <li><span class="guide-icon">&#x270A;</span> 握拳 — 爱心跟手 + 我爱你居中</li>
+        <li><span class="guide-icon">&#x1F90F;</span> 拇指食指捏合 — 诱饵球旋转</li>
+      </ul>
+      <p class="guide-hint">按 <kbd>H</kbd> 隐藏</p>
+    </div>
+
+    <div id="debug-panel" style="display:none">
+      <div class="debug-row"><span class="debug-label">手势</span><span id="dbGesture">-</span></div>
+      <div class="debug-row"><span class="debug-label">置信度</span><span id="dbConf">-</span></div>
+      <div class="debug-row"><span class="debug-label">状态</span><span id="dbState">-</span></div>
+      <div class="debug-row"><span class="debug-label">稳定</span><span id="dbStable">-</span>ms</div>
+      <div class="debug-row"><span class="debug-label">触发</span><span id="dbTrig">-</span></div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

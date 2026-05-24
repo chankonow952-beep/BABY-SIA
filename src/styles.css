@@ -1,0 +1,240 @@
+:root {
+  color: #f7f0f4;
+  background: #0a0608;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-synthesis: none;
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: #050507;
+}
+
+button {
+  color: inherit;
+  font: inherit;
+}
+
+#experience {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+}
+
+.ui-shell {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(18px, 3vw, 34px);
+  pointer-events: none;
+}
+
+.brand-panel,
+.status-panel {
+  pointer-events: auto;
+  width: min(100%, 560px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.eyebrow {
+  margin: 0 0 6px;
+  color: rgba(228, 195, 210, 0.55);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0;
+  color: rgba(252, 240, 246, 0.88);
+  font-size: clamp(28px, 4.5vw, 54px);
+  font-weight: 700;
+  line-height: 0.92;
+}
+
+.mode-tabs {
+  display: inline-grid;
+  grid-template-columns: repeat(3, minmax(74px, 1fr));
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid rgba(220, 180, 200, 0.12);
+  border-radius: 8px;
+  background: rgba(14, 6, 10, 0.55);
+  box-shadow: 0 18px 48px rgba(30, 5, 20, 0.3);
+  backdrop-filter: blur(18px);
+}
+
+.mode-button {
+  min-height: 34px;
+  border: 0;
+  border-radius: 6px;
+  padding: 0 12px;
+  color: rgba(228, 210, 220, 0.65);
+  background: transparent;
+  cursor: pointer;
+  transition:
+    color 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.mode-button:hover,
+.mode-button:focus-visible {
+  color: #fce4f0;
+  outline: none;
+}
+
+.mode-button.active {
+  color: #fef0f6;
+  background: rgba(210, 140, 170, 0.15);
+  box-shadow: inset 0 0 28px rgba(220, 140, 180, 0.1);
+}
+
+.status-panel {
+  justify-content: flex-start;
+  width: fit-content;
+  max-width: 100%;
+  min-height: 34px;
+  padding: 0 13px;
+  color: rgba(220, 195, 210, 0.55);
+  font-size: 12px;
+  border: 1px solid rgba(210, 170, 190, 0.1);
+  border-radius: 8px;
+  background: rgba(10, 5, 8, 0.5);
+  backdrop-filter: blur(16px);
+}
+
+.divider {
+  width: 1px;
+  height: 13px;
+  background: rgba(200, 160, 180, 0.15);
+}
+
+#debug-panel {
+  position: fixed;
+  bottom: 12px;
+  left: 12px;
+  z-index: 999;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: rgba(5, 2, 4, 0.78);
+  border: 1px solid rgba(220, 150, 180, 0.18);
+  font-family: monospace;
+  font-size: 11px;
+  line-height: 1.6;
+  color: rgba(240, 200, 215, 0.75);
+  backdrop-filter: blur(10px);
+  pointer-events: none;
+  min-width: 140px;
+}
+
+.debug-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.debug-label {
+  color: rgba(220, 160, 180, 0.50);
+}
+
+/* ===== 手势说明面板 ===== */
+.gesture-guide {
+  position: fixed;
+  top: clamp(18px, 3vw, 34px);
+  right: clamp(18px, 3vw, 34px);
+  z-index: 998;
+  width: min(100% - 24px, 250px);
+  padding: 14px 18px;
+  border: 1px solid rgba(210, 170, 190, 0.12);
+  border-radius: 10px;
+  background: rgba(10, 5, 8, 0.55);
+  backdrop-filter: blur(16px);
+  font-size: 12px;
+  line-height: 1.7;
+  color: rgba(220, 195, 210, 0.65);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: auto;
+}
+
+.gesture-guide.hidden {
+  opacity: 0;
+  transform: translateY(-8px);
+  pointer-events: none;
+}
+
+.guide-title {
+  margin: 0 0 8px;
+  color: rgba(252, 240, 246, 0.80);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.guide-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.guide-list li {
+  margin-bottom: 3px;
+}
+
+.guide-icon {
+  display: inline-block;
+  width: 20px;
+  text-align: center;
+}
+
+.guide-hint {
+  margin: 8px 0 0;
+  color: rgba(200, 160, 180, 0.40);
+  font-size: 10px;
+}
+
+.guide-hint kbd {
+  padding: 1px 5px;
+  border: 1px solid rgba(200, 160, 180, 0.20);
+  border-radius: 3px;
+  font-family: inherit;
+  font-size: 10px;
+  background: rgba(20, 10, 15, 0.45);
+}
+
+@media (max-width: 680px) {
+  .brand-panel {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .mode-tabs {
+    width: 100%;
+  }
+
+  .mode-button {
+    padding: 0 8px;
+    font-size: 13px;
+  }
+}
