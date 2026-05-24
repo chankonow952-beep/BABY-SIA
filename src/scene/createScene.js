@@ -47,17 +47,28 @@ export function createScene(canvas, options = {}) {
     }
   }
 
+  let onResizeCallback = null;
+
   function resize() {
     const width = window.innerWidth;
     const height = window.innerHeight;
+    const aspect = width / Math.max(height, 1);
 
-    camera.aspect = width / height;
+    camera.aspect = aspect;
     camera.updateProjectionMatrix();
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, tier.pixelRatio));
     renderer.setSize(width, height);
     if (composer) {
       composer.setSize(width, height);
     }
+
+    if (onResizeCallback) {
+      onResizeCallback({ width, height, aspect });
+    }
+  }
+
+  function onResize(fn) {
+    onResizeCallback = fn;
   }
 
   function update(time) {
@@ -85,6 +96,7 @@ export function createScene(canvas, options = {}) {
     composer,
     bloomPass,
     resize,
+    onResize,
     update,
     render,
   };

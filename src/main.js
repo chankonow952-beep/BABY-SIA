@@ -8,15 +8,20 @@ import { PointerController } from './interaction/PointerController.js';
 import { AnimationLoop } from './animation/AnimationLoop.js';
 import { StateMachine, State } from './state/StateMachine.js';
 import { GestureRecognizer, Gesture } from './gesture/GestureRecognizer.js';
-import { PARTICLE_CONFIG, STATE_TIMING, GESTURE_CONFIG, detectPerfTier, PERF_TIER } from './config.js';
+import { PARTICLE_CONFIG, STATE_TIMING, GESTURE_CONFIG, detectPerfTier, PERF_TIER, getResponsiveBounds, getResponsiveShapeScale } from './config.js';
 
 const canvas = document.querySelector('#experience');
 const perfTier = detectPerfTier();
 const particleCount = PERF_TIER[perfTier].count;
 
+// 视口自适应：覆盖固定 bounds 和形状缩放
+const responsiveBounds = getResponsiveBounds();
+PARTICLE_CONFIG.bounds = responsiveBounds;
+const shapeScale = getResponsiveShapeScale();
+
 const sceneView = createScene(canvas, { performanceTier: perfTier });
 const pointer = new PointerController(canvas, sceneView.camera);
-const targets = createShapeTargets(particleCount);
+const targets = createShapeTargets(particleCount, shapeScale);
 const particles = new ParticleSystem({
   count: particleCount,
   scene: sceneView.scene,
@@ -185,9 +190,32 @@ const loop = new AnimationLoop({
   render: () => sceneView.render(),
 });
 
+let lastAspect = window.innerWidth / Math.max(window.innerHeight, 1);
+
 window.addEventListener('resize', () => {
   sceneView.resize();
   pointer.resize();
+
+  const newAspect = window.innerWidth / Math.max(window.innerHeight, 1);
+  if (Math.abs(newAspect - lastAspect) > 0.05) {
+    lastAspect = newAspect;
+    const newBounds = getResponsiveBounds();
+    particles.updateBounds(newBounds);
+  }
+});
+
+// 手势面板切换按钮（移动端）
+const gestureToggle = document.querySelector('#gesture-toggle');
+gestureToggle.addEventListener('click', () => {
+  guideVisible = !guideVisible;
+  gestureGuide.classList.toggle('hidden', !guideVisible);
+});
+
+// 手势面板关闭按钮
+const guideClose = document.querySelector('#guide-close');
+guideClose.addEventListener('click', () => {
+  guideVisible = false;
+  gestureGuide.classList.add('hidden');
 });
 
 loop.start();

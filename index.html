@@ -2,7 +2,7 @@
 <html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#050507" />
     <title>DITTO Particle Installation</title>
   </head>
@@ -25,6 +25,7 @@
     </main>
 
     <div id="gesture-guide" class="gesture-guide">
+      <button id="guide-close" class="guide-close" aria-label="关闭手势说明">&times;</button>
       <p class="guide-title">手势说明</p>
       <ul class="guide-list">
         <li><span class="guide-icon">&#x1F590;</span> 张开手掌 — 爆炸散开 + 中心爱心</li>
@@ -33,6 +34,8 @@
       </ul>
       <p class="guide-hint">按 <kbd>H</kbd> 隐藏</p>
     </div>
+
+    <button id="gesture-toggle" class="gesture-toggle" aria-label="切换手势说明">?</button>
 
     <div id="debug-panel" style="display:none">
       <div class="debug-row"><span class="debug-label">手势</span><span id="dbGesture">-</span></div>

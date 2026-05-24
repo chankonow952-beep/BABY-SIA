@@ -8,6 +8,10 @@
   text-rendering: geometricPrecision;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
 }
 
 * {
@@ -40,10 +44,18 @@ button {
 .ui-shell {
   position: fixed;
   inset: 0;
+  top: var(--safe-top);
+  bottom: var(--safe-bottom);
+  left: var(--safe-left);
+  right: var(--safe-right);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: clamp(18px, 3vw, 34px);
+  padding: clamp(14px, 3vw, 34px);
+  padding-top: max(clamp(14px, 3vw, 34px), var(--safe-top));
+  padding-bottom: max(clamp(14px, 3vw, 34px), var(--safe-bottom));
+  padding-left: max(clamp(14px, 3vw, 34px), var(--safe-left));
+  padding-right: max(clamp(14px, 3vw, 34px), var(--safe-right));
   pointer-events: none;
 }
 
@@ -60,7 +72,7 @@ button {
 .eyebrow {
   margin: 0 0 6px;
   color: rgba(228, 195, 210, 0.55);
-  font-size: 11px;
+  font-size: clamp(10px, 1.2vw, 11px);
   font-weight: 600;
   letter-spacing: 0;
   text-transform: uppercase;
@@ -69,7 +81,7 @@ button {
 h1 {
   margin: 0;
   color: rgba(252, 240, 246, 0.88);
-  font-size: clamp(28px, 4.5vw, 54px);
+  font-size: clamp(24px, 4.5vw, 54px);
   font-weight: 700;
   line-height: 0.92;
 }
@@ -87,13 +99,15 @@ h1 {
 }
 
 .mode-button {
-  min-height: 34px;
+  min-height: 44px;
   border: 0;
   border-radius: 6px;
-  padding: 0 12px;
+  padding: 0 14px;
   color: rgba(228, 210, 220, 0.65);
   background: transparent;
   cursor: pointer;
+  white-space: nowrap;
+  font-size: clamp(12px, 1.5vw, 14px);
   transition:
     color 180ms ease,
     background 180ms ease,
@@ -119,7 +133,7 @@ h1 {
   min-height: 34px;
   padding: 0 13px;
   color: rgba(220, 195, 210, 0.55);
-  font-size: 12px;
+  font-size: clamp(10px, 1.3vw, 12px);
   border: 1px solid rgba(210, 170, 190, 0.1);
   border-radius: 8px;
   background: rgba(10, 5, 8, 0.5);
@@ -132,39 +146,13 @@ h1 {
   background: rgba(200, 160, 180, 0.15);
 }
 
-#debug-panel {
-  position: fixed;
-  bottom: 12px;
-  left: 12px;
-  z-index: 999;
-  padding: 10px 14px;
-  border-radius: 8px;
-  background: rgba(5, 2, 4, 0.78);
-  border: 1px solid rgba(220, 150, 180, 0.18);
-  font-family: monospace;
-  font-size: 11px;
-  line-height: 1.6;
-  color: rgba(240, 200, 215, 0.75);
-  backdrop-filter: blur(10px);
-  pointer-events: none;
-  min-width: 140px;
-}
-
-.debug-row {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.debug-label {
-  color: rgba(220, 160, 180, 0.50);
-}
-
 /* ===== 手势说明面板 ===== */
 .gesture-guide {
   position: fixed;
   top: clamp(18px, 3vw, 34px);
+  top: max(clamp(18px, 3vw, 34px), var(--safe-top));
   right: clamp(18px, 3vw, 34px);
+  right: max(clamp(18px, 3vw, 34px), var(--safe-right));
   z-index: 998;
   width: min(100% - 24px, 250px);
   padding: 14px 18px;
@@ -223,18 +211,351 @@ h1 {
   background: rgba(20, 10, 15, 0.45);
 }
 
-@media (max-width: 680px) {
+/* 手势面板关闭按钮（移动端可见） */
+.guide-close {
+  display: none;
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: rgba(228, 210, 220, 0.6);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+.guide-close:hover {
+  color: rgba(252, 240, 246, 0.9);
+  background: rgba(210, 140, 170, 0.12);
+}
+
+/* ===== 手势面板切换按钮（移动端可见） ===== */
+.gesture-toggle {
+  display: none;
+  position: fixed;
+  top: clamp(18px, 3vw, 34px);
+  top: max(clamp(18px, 3vw, 34px), var(--safe-top));
+  right: clamp(18px, 3vw, 34px);
+  right: max(clamp(18px, 3vw, 34px), var(--safe-right));
+  z-index: 999;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(210, 170, 190, 0.18);
+  border-radius: 50%;
+  background: rgba(10, 5, 8, 0.6);
+  backdrop-filter: blur(14px);
+  color: rgba(228, 210, 220, 0.7);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  pointer-events: auto;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== 调试面板 ===== */
+#debug-panel {
+  position: fixed;
+  bottom: 12px;
+  bottom: max(12px, var(--safe-bottom));
+  left: 12px;
+  left: max(12px, var(--safe-left));
+  z-index: 999;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: rgba(5, 2, 4, 0.78);
+  border: 1px solid rgba(220, 150, 180, 0.18);
+  font-family: monospace;
+  font-size: 11px;
+  line-height: 1.6;
+  color: rgba(240, 200, 215, 0.75);
+  backdrop-filter: blur(10px);
+  pointer-events: none;
+  min-width: 140px;
+}
+
+.debug-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.debug-label {
+  color: rgba(220, 160, 180, 0.50);
+}
+
+/* ===== 超大屏：居中 UI 面板，限制宽度 ===== */
+@media (min-width: 2000px) {
+  .ui-shell {
+    max-width: 1800px;
+    margin: 0 auto;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+  }
+
+  .gesture-guide {
+    right: max(calc((100vw - 1800px) / 2 + 24px), 24px);
+  }
+
+  .gesture-toggle {
+    right: max(calc((100vw - 1800px) / 2 + 24px), 24px);
+  }
+}
+
+/* ===== 平板竖屏 / 小笔记本 ≤ 1024px ===== */
+@media (max-width: 1024px) {
+  h1 {
+    font-size: clamp(22px, 5vw, 38px);
+  }
+
+  .gesture-guide {
+    width: min(100% - 20px, 220px);
+    font-size: 11px;
+    padding: 12px 14px;
+  }
+}
+
+/* ===== 平板竖屏 ≤ 768px ===== */
+@media (max-width: 768px) {
+  .ui-shell {
+    padding: clamp(10px, 2.5vw, 20px);
+    padding-top: max(clamp(10px, 2.5vw, 20px), var(--safe-top));
+    padding-bottom: max(clamp(10px, 2.5vw, 20px), var(--safe-bottom));
+    padding-left: max(clamp(10px, 2.5vw, 20px), var(--safe-left));
+    padding-right: max(clamp(10px, 2.5vw, 20px), var(--safe-right));
+  }
+
   .brand-panel {
     align-items: flex-start;
     flex-direction: column;
+    gap: 12px;
+    width: 100%;
   }
 
   .mode-tabs {
     width: 100%;
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .mode-button {
-    padding: 0 8px;
+    padding: 0 10px;
     font-size: 13px;
+  }
+
+  h1 {
+    font-size: clamp(20px, 6vw, 32px);
+  }
+
+  .gesture-guide {
+    width: min(100% - 16px, 200px);
+    font-size: 11px;
+    padding: 10px 12px;
+  }
+
+  .guide-title {
+    font-size: 12px;
+    margin-bottom: 6px;
+  }
+
+  #debug-panel {
+    bottom: max(8px, var(--safe-bottom));
+    left: max(8px, var(--safe-left));
+    padding: 8px 10px;
+    font-size: 10px;
+    min-width: 120px;
+  }
+}
+
+/* ===== 大屏手机 ≤ 480px ===== */
+@media (max-width: 480px) {
+  .ui-shell {
+    padding: clamp(8px, 2vw, 14px);
+    padding-top: max(clamp(8px, 2vw, 14px), var(--safe-top));
+    padding-bottom: max(clamp(8px, 2vw, 14px), var(--safe-bottom));
+    padding-left: max(clamp(8px, 2vw, 14px), var(--safe-left));
+    padding-right: max(clamp(8px, 2vw, 14px), var(--safe-right));
+  }
+
+  .brand-panel {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .mode-tabs {
+    width: 100%;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3px;
+    padding: 3px;
+    border-radius: 6px;
+  }
+
+  .mode-button {
+    min-height: 42px;
+    padding: 0 8px;
+    font-size: 12px;
+    border-radius: 5px;
+  }
+
+  h1 {
+    font-size: clamp(18px, 7vw, 26px);
+  }
+
+  .eyebrow {
+    font-size: 10px;
+    margin-bottom: 4px;
+  }
+
+  .status-panel {
+    font-size: 10px;
+    padding: 0 10px;
+    min-height: 30px;
+    border-radius: 6px;
+  }
+
+  /* 手势面板默认隐藏，通过按钮切换 */
+  .gesture-guide {
+    width: min(100% - 16px, 260px);
+    font-size: 11px;
+    padding: 12px 14px;
+    top: max(10px, var(--safe-top));
+    right: max(10px, var(--safe-right));
+  }
+
+  .gesture-toggle {
+    display: flex;
+  }
+
+  .guide-close {
+    display: flex;
+  }
+
+  /* 面板可见时切换按钮隐藏 */
+  .gesture-guide:not(.hidden) ~ .gesture-toggle {
+    display: none;
+  }
+
+  #debug-panel {
+    bottom: max(6px, var(--safe-bottom));
+    right: max(6px, var(--safe-right));
+    left: auto;
+    padding: 6px 10px;
+    font-size: 10px;
+    min-width: auto;
+    border-radius: 6px;
+  }
+}
+
+/* ===== 小屏手机 ≤ 375px ===== */
+@media (max-width: 375px) {
+  .mode-tabs {
+    gap: 2px;
+    padding: 2px;
+  }
+
+  .mode-button {
+    min-height: 38px;
+    padding: 0 6px;
+    font-size: 11px;
+    border-radius: 4px;
+  }
+
+  h1 {
+    font-size: clamp(17px, 7.5vw, 22px);
+  }
+
+  .eyebrow {
+    font-size: 9px;
+  }
+
+  .status-panel {
+    font-size: 9px;
+    padding: 0 8px;
+    min-height: 28px;
+    white-space: nowrap;
+  }
+
+  .gesture-guide {
+    width: calc(100% - 12px);
+    padding: 10px 12px;
+    font-size: 10px;
+    top: max(8px, var(--safe-top));
+    right: max(6px, var(--safe-right));
+  }
+
+  .guide-title {
+    font-size: 11px;
+  }
+
+  .gesture-toggle {
+    width: 38px;
+    height: 38px;
+    font-size: 16px;
+    top: max(8px, var(--safe-top));
+    right: max(6px, var(--safe-right));
+  }
+
+  #debug-panel {
+    padding: 4px 8px;
+    font-size: 9px;
+  }
+}
+
+/* ===== 横屏手机 / 小屏横屏 ≤ 480px 高度 ===== */
+@media (max-height: 480px) and (orientation: landscape) {
+  .ui-shell {
+    padding: 6px 12px;
+  }
+
+  .brand-panel {
+    flex-direction: row;
+    align-items: center;
+    gap: 12px;
+  }
+
+  h1 {
+    font-size: clamp(16px, 3vh, 22px);
+  }
+
+  .eyebrow {
+    font-size: 9px;
+    margin-bottom: 2px;
+  }
+
+  .mode-tabs {
+    grid-template-columns: repeat(3, auto);
+  }
+
+  .mode-button {
+    min-height: 32px;
+    padding: 0 10px;
+    font-size: 11px;
+  }
+
+  .status-panel {
+    font-size: 10px;
+    min-height: 28px;
+    padding: 0 10px;
+  }
+
+  .gesture-guide {
+    font-size: 10px;
+    padding: 8px 10px;
+    width: min(100% - 12px, 180px);
+  }
+
+  .guide-list li {
+    margin-bottom: 1px;
+  }
+
+  .guide-hint {
+    display: none;
   }
 }

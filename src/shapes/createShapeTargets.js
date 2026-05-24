@@ -2,37 +2,40 @@ import { createTextTargets } from './textShape.js';
 import { createSymbolTargets } from './symbolShape.js';
 import { TEXT_CONFIG, SHAPE_CONFIG } from '../config.js';
 
-export function createShapeTargets(count) {
+export function createShapeTargets(count, scale = 1) {
+  const sx = (w) => w * scale;
+  const sy = (h) => h * scale;
+
   return {
     introText: createTextTargets({
       count,
       text: TEXT_CONFIG.intro,
-      width: SHAPE_CONFIG.introText.width,
-      height: SHAPE_CONFIG.introText.height,
+      width: sx(SHAPE_CONFIG.introText.width),
+      height: sy(SHAPE_CONFIG.introText.height),
     }),
     loveText: createTextTargets({
       count,
       text: TEXT_CONFIG.love,
-      width: SHAPE_CONFIG.loveText.width,
-      height: SHAPE_CONFIG.loveText.height,
+      width: sx(SHAPE_CONFIG.loveText.width),
+      height: sy(SHAPE_CONFIG.loveText.height),
     }),
     idleHeart: createSymbolTargets({
       count,
       type: 'heart',
-      width: SHAPE_CONFIG.idleHeart.width,
-      height: SHAPE_CONFIG.idleHeart.height,
+      width: sx(SHAPE_CONFIG.idleHeart.width),
+      height: sy(SHAPE_CONFIG.idleHeart.height),
     }),
     bigHeart: createSymbolTargets({
       count,
       type: 'heart',
-      width: SHAPE_CONFIG.bigHeart.width,
-      height: SHAPE_CONFIG.bigHeart.height,
+      width: sx(SHAPE_CONFIG.bigHeart.width),
+      height: sy(SHAPE_CONFIG.bigHeart.height),
     }),
     smallHeart: createSymbolTargets({
       count,
       type: 'heart',
-      width: SHAPE_CONFIG.smallHeart.width,
-      height: SHAPE_CONFIG.smallHeart.height,
+      width: sx(SHAPE_CONFIG.smallHeart.width),
+      height: sy(SHAPE_CONFIG.smallHeart.height),
     }),
   };
 }

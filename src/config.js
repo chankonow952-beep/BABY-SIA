@@ -141,6 +141,34 @@ export const PERF_TIER = {
   },
 };
 
+// ===== 视口自适应（响应不同屏幕比例） =====
+export const ASPECT_REF = 16 / 9;
+
+export function getViewportAspect() {
+  return window.innerWidth / Math.max(window.innerHeight, 1);
+}
+
+export function getViewportScale() {
+  const aspect = getViewportAspect();
+  const clamped = Math.max(0.6, Math.min(3.0, aspect));
+  return clamped / ASPECT_REF;
+}
+
+export function getResponsiveBounds() {
+  const rawScale = getViewportScale();
+  const softScale = Math.sqrt(rawScale);
+  return {
+    x: PARTICLE_CONFIG.bounds.x * softScale,
+    y: PARTICLE_CONFIG.bounds.y,
+    z: PARTICLE_CONFIG.bounds.z * softScale,
+  };
+}
+
+export function getResponsiveShapeScale() {
+  const rawScale = getViewportScale();
+  return Math.max(0.48, Math.min(rawScale, 1.35));
+}
+
 export function detectPerfTier() {
   const cores = navigator.hardwareConcurrency || 4;
   const dpr = window.devicePixelRatio || 1;

@@ -113,6 +113,7 @@ export class ParticleSystem {
     this.bloomOpenness = 0;
     this.bloomBaseTargets = null;
     this.bloomScatterTargets = null;
+    this._pointerExemptStart = -1;
 
     this.createInitialData();
     this.geometry = this.createGeometry();
@@ -204,6 +205,13 @@ export class ParticleSystem {
       this.transitionProgress = 1;
       this.bloomOpenness = 0;
     }
+
+    // compactHeart 模式：后 40% 文字粒子不响应 pointer 力
+    if (morphType === 'compactHeart') {
+      this._pointerExemptStart = Math.floor(this.count * COMPACT_HEART_CONFIG.heartRatio);
+    } else {
+      this._pointerExemptStart = -1;
+    }
   }
 
   setCompactTextTargets(textArray) {
@@ -211,6 +219,10 @@ export class ParticleSystem {
       this.compactTextBase = new Float32Array(textArray.length);
     }
     this.compactTextBase.set(textArray);
+  }
+
+  updateBounds(newBounds) {
+    this.bounds = { ...this.bounds, ...newBounds };
   }
 
   update(time, delta, pointer) {
@@ -267,6 +279,19 @@ export class ParticleSystem {
       vx += (tx - px) * targetEase;
       vy += (ty - py) * targetEase;
       vz += (tz - pz) * targetEase;
+
+      const exemptFromPointer = self._pointerExemptStart >= 0 && i >= self._pointerExemptStart;
+
+      // 文字粒子（握拳模式"我爱你"）：直接吸附到目标，跳过全部物理模拟
+      if (exemptFromPointer) {
+        this.positions[index] = tx;
+        this.positions[index + 1] = ty;
+        this.positions[index + 2] = tz;
+        this.velocities[index] = 0;
+        this.velocities[index + 1] = 0;
+        this.velocities[index + 2] = 0;
+        continue;
+      }
 
       const dx = px - pointer.world.x;
       const dy = py - pointer.world.y;
